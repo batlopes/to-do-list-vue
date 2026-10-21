@@ -42,7 +42,7 @@ Projeto desenvolvido como laboratório prático do ecossistema moderno do Vue.js
 1. **Clone o repositório:**
 ```bash
 git clone https://github.com/batlopes/to-do-list-vue.git
-cd vue-todo-list
+cd to-do-list-vue
 ```
 
 
