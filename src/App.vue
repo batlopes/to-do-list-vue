@@ -16,9 +16,33 @@
       >Adicionar</button>
     </div>
 
+     <div class="d-flex gap-2 mb-3">
+      <input
+        type="text"
+        placeholder="Buscar tarefa..."
+        class="form-control"
+        style="flex: 1;"
+        v-model="filterSearch"
+      >
+      <select
+        class="form-select"
+        style="flex: 1;"
+        v-model="filterStatus"
+      >
+        <option value="">Todas</option>
+        <option value="pending">Pendentes</option>
+        <option value="completed">Concluídas</option>
+      </select>
+      <button
+        class="btn btn-outline-secondary btn-sm"
+        style="flex-shrink: 0;"
+        @click="clearFilters"
+      >Limpar filtros</button>
+    </div>
+
      <ul class="list-group">
       <li
-        v-for="task in tasks"
+        v-for="task in filteredTasks"
         :key="task.id"
         class="list-group-item d-flex align-items-center gap-2"
       >
@@ -75,10 +99,28 @@
 </template>
 
 <script setup>
-import { ref } from "vue"
+import { computed, ref } from "vue"
 
 const newTask = ref("")
 const tasks = ref([])
+const filterSearch = ref('')
+const filterStatus = ref('')
+
+const filteredTasks = computed(() => {
+  let output = tasks.value
+  if (filterSearch.value) {
+    const searchText = filterSearch.value.toLowerCase()
+    output = output.filter(o => o.name.toLowerCase().includes(searchText))
+  }
+
+  if (filterStatus.value === 'pending') {
+    output = output.filter(o => o.completed === false)
+  } else if (filterStatus.value === 'completed') {
+    output = output.filter(o => o.completed === true)
+  }
+
+  return output
+})
 
 function addTask() {
   if (!newTask.value) return
@@ -112,6 +154,11 @@ function deleteTask(task) {
   if (index !== -1) {
     tasks.value.splice(index, 1)
   }
+}
+
+function clearFilters() {
+  filterSearch.value = ''
+  filterStatus.value = ''
 }
 
 </script>
