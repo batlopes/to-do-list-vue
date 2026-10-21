@@ -2,6 +2,25 @@
   <div class="container" style="max-width: 800px">
     <h1 class="text-center my-4">Tarefinhas</h1>
 
+     <div class="card mb-3">
+      <div class="card-body">
+        <div class="row text-center">
+          <div class="col-4">
+            <div class="fw-bold fs-4">{{totalTasks}}</div>
+            <div class="text-muted small">Total</div>
+          </div>
+          <div class="col-4">
+            <div class="fw-bold fs-4 text-success">{{totalCompleted}}</div>
+            <div class="text-muted small">Concluídas</div>
+          </div>
+          <div class="col-4">
+            <div class="fw-bold fs-4 text-warning">{{totalPending}}</div>
+            <div class="text-muted small">Pendentes</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="input-group mb-3">
       <input
         type="text"
@@ -114,6 +133,10 @@ const newTask = ref("")
 const tasks = ref([])
 const filterSearch = ref('')
 const filterStatus = ref('')
+
+const totalTasks = computed(() => tasks.value.length)
+const totalCompleted = computed(() => tasks.value.filter(o => o.completed).length)
+const totalPending = computed(() => tasks.value.filter(o => !o.completed).length)
 
 const emptyStateMessage = computed(() => {
   let output = 'Nenhuma tarefa cadastrada.'
