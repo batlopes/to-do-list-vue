@@ -16,7 +16,10 @@
       >Adicionar</button>
     </div>
 
-     <div class="d-flex gap-2 mb-3">
+     <div
+      class="d-flex gap-2 mb-3"
+      v-if="tasks.length"
+     >
       <input
         type="text"
         placeholder="Buscar tarefa..."
@@ -38,6 +41,12 @@
         style="flex-shrink: 0;"
         @click="clearFilters"
       >Limpar filtros</button>
+    </div>
+
+     <div v-if="!filteredTasks.length" class="card bg-light">
+      <div class="card-body text-center py-5">
+        <p class="text-muted mb-0">{{emptyStateMessage}}</p>
+      </div>
     </div>
 
      <ul class="list-group">
@@ -105,6 +114,16 @@ const newTask = ref("")
 const tasks = ref([])
 const filterSearch = ref('')
 const filterStatus = ref('')
+
+const emptyStateMessage = computed(() => {
+  let output = 'Nenhuma tarefa cadastrada.'
+
+  if (filterSearch.value || filterStatus.value) {
+    output = 'Nenhum resultado para este filtro.'
+  }
+
+  return output
+})
 
 const filteredTasks = computed(() => {
   let output = tasks.value
